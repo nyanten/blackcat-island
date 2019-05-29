@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        @charset "UTF-8";
+        /* ========BASIC======== */
+        html {
+        overflow-y:scroll;
+        }
+
+        body {
+        margin:0;
+        padding:0;
+        line-height:1.6;
+        letter-spacing:1px;
+        font-family:Verdana, Helvetica, sans-serif;
+        font-size:12px;
+        color:#333;
+        background:#fff;
+        }
+
+        br {
+        letter-spacing:normal;
+        }
+
+        a {
+        color:#0089a1;
+        text-decoration:none;
+        }
+
+        a:hover {
+        color:#0089a1;
+        text-decoration:underline;
+        }
+
+        img {
+        border:0;
+        vertical-align:bottom;
+        }
+
+        h1,h2,h3,h4,h5,h6 {
+        margin:0;
+        }
+
+
+        /* ========TEMPLATE LAYOUT======== */
+        #top {
+        width:780px;
+        margin:10px auto;
+        border:1px solid #333;
+        }
+
+        #header {
+        width:780px;
+        }
+
+        #contents {
+        clear:both;
+        }
+
+        #main {
+        float:left;
+        width:540px;
+        padding:10px;
+        }
+
+
+        /* ========HEADER CUSTOMIZE======== */
+        #header h1 {
+        margin:0;
+        padding:10px;
+        font-size:24px;
+        }
+
+        #header h1 a {
+        color:#333;
+        }
+
+
+        /* ========MAIN CONTENTS CUSTOMIZE======== */
+        #main h2 {
+        margin-bottom:5px;
+        padding:5px 0;
+        font-size:16px;
+        border-bottom:3px double #ccc;
+        }
+
+        #main h3 {
+        margin-bottom:5px;
+        padding:5px;
+        font-size:14px;
+        border-left:5px solid #0089a1;
+        border-bottom:1px dotted #ccc;
+        }
+
+        #main h4 {
+        margin-bottom:5px;
+        padding:5px;
+        font-size:13px;
+        color:#fff;
+        background:#0089a1;
+        }
+
+        #main h5 {
+        margin-bottom:5px;
+        font-size:13px;
+        border-bottom:1px dotted #ccc;
+        }
+
+        #main h6 {
+        margin-bottom:5px;
+        font-size:13px;
+        }
+
+
+        #main p {
+        margin:0 0 1em 0;
+        }
+
+
+        /* INFORMATION CUSTOMIZE */
+        * html body #main dl.information dd div {
+        display:inline-block;
+        }
+
+        #main table {
+        width:100%;
+        border-collapse:collapse;
+        }
+
+        #main table th {
+        padding:5px;
+        font-size:12px;
+        text-align:left;
+        border:1px solid #aaa;
+        background:#f0f7fc;
+        }
+
+        #main table td {
+        padding:5px;
+        font-size:12px;
+        text-align:left;
+        border:1px solid #aaa;
+        }
+
+
+    </style>
+
+    <title>デモ用アプリ</title>
+    </head>
+    <body>
+        <div id="top">
+            <div id="header">
+                <h1>hogehoge株式会社</h1>
+            </div>
+        <div id="contents">
+            <div id="main" style="width: 760px;">
+              <h2>デモ用アプリ</h2>
+              <p>ここにこのサンプルコードの説明を記載してださい。</p>
+              <h4>総務部PDCA(仮)</h4>
+                <table id="table1"  border="1" cellpadding="10">
+                    <tr>
+                        <th>目的</th>
+                        <th>目標</th>
+                        <th>どうやって</th>
+                        <th>なにをした</th>
+                        <th>結果</th>
+                        <th>備考</th>
+                    </tr>
+                </table>
+                <div style="padding-top: 10px;">
+                    <h5>↓入力フィールド</h5>
+                    <input name="table1_cell_value" id="th_value1" type="text" placeholder="why" size="14">
+                    <input name="table1_cell_value" id="th_value2" type="text" placeholder="what/plan" size="14">
+                    <input name="table1_cell_value" id="th_value3" type="text" placeholder="how" size="14">
+                    <input name="table1_cell_value" id="th_value4" type="text" placeholder="do" size="14">
+                    <input name="table1_cell_value" id="th_value5" type="text" placeholder="result/check" size="14">
+                    <input name="table1_cell_value" id="th_value6" type="text" placeholder="next/act" size="14">
+                    <input type="button" value="行を追加" onclick="add_line()">
+                    <b><a id="download" href="#" download="pdca.csv" onclick="handleDownload()">csvファイルダウンロード</a></b>
+                </div>
+            </div>
+        </div>
+
+  <script>
+    //ここから表の行追加のコード
+    function add_line() {
+        for(var i = 0; i < document.getElementsByName("table1_cell_value").length; i++){
+            if(document.getElementsByName("table1_cell_value")[i].value ==""){
+                alert("未入力項目があります。");
+                return false;
+            }
+        }
+
+        var table = document.getElementById('table1');//id=table1という要素を取得
+        var row = table.insertRow(-1);//id=table1の中にtrタグを最後の子要素として追加
+        var cells = new Array();
+        for(var i = 0; i < table.rows[0].cells.length; i++){
+            cells[i] = row.insertCell(-1);//新しく作ったrowの中にtrタグを最後の子要素として追加
+            cells[i].innerText=document.getElementsByName("table1_cell_value")[i].value;
+            document.getElementsByName("table1_cell_value")[i].value="";//入力フィールドの初期化
+        }
+    }
+    //ここまで表の列追加のコード
+
+    //ここからCSV出力＆ダウンロード
+    function handleDownload() {
+        var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);//文字コードをBOM付きUTF-8に指定
+        var table = document.getElementById('table1');//id=table1という要素を取得
+        var data_csv="";//ここに文字データとして値を格納していく
+
+        for(var i = 0;  i < table.rows.length; i++){
+          for(var j = 0; j < table.rows[i].cells.length; j++){
+            data_csv += table.rows[i].cells[j].innerText;//HTML中の表のセル値をdata_csvに格納
+            if(j == table.rows[i].cells.length-1) data_csv += "\n";//行終わりに改行コードを追加
+            else data_csv += ",";//セル値の区切り文字として,を追加
+          }
+        }
+
+        var blob = new Blob([ bom, data_csv], { "type" : "test/csv" });//data_csvのデータをcsvとしてダウンロードする関数
+        if (window.navigator.msSaveBlob) { //IEの場合の処理
+            window.navigator.msSaveBlob(blob, "pdca.csv");
+            //window.navigator.msSaveOrOpenBlob(blob, "test.csv");// msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+        } else {
+            document.getElementById("download").href = window.URL.createObjectURL(blob);
+        }
+
+        delete data_csv;//data_csvオブジェクトはもういらないので消去してメモリを開放
+    }
+
+    function test(){
+      alert("保存しませんか？");
+    }
+    setTimeout("test()", 300000);
+
+    //ここまでCSV出力＆ダウンロード
+</script>
+  </body>
+</html>
